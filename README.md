@@ -9,12 +9,12 @@ File is stored in three sections: head, body i script. The <! DOCTYPE> element i
 
 ### An example of running the program:
 `Please enter a year you would like to have a map for: 
-2001
-Please enter your location (format: lat, long): 
-52.5170365, 13.3888599
-Map is generating...
-Please wait...
-Finished. Please have look at the map movies_map.html`
+2001`
+`Please enter your location (format: lat, long): 
+52.5170365, 13.3888599`
+`Map is generating...`
+`Please wait...`
+`Finished. Please have look at the map movies_map.html`
 
 ![(example1.PNG)]
 
