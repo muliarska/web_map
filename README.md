@@ -20,9 +20,9 @@ File is stored in three sections: head, body i script. The <! DOCTYPE> element i
 
 `Finished. Please have look at the map movies_map.html`
 
-![(example1.PNG)]
+[(example1.PNG)]
 
-![(example2.PNG)]
+[(example2.PNG)]
 
 ### Conclusion:
 The map shows the tags of the nearby locations where the films were made and what the movies are. The other layer also shows 5 countries where film production is the highest quality.
