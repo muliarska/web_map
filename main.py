@@ -1,9 +1,9 @@
 from geopy.distance import great_circle
 from geopy.geocoders import Nominatim
-geolocator = Nominatim(user_agent="main.py")
 from geopy.extra.rate_limiter import RateLimiter
-geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
 import folium
+geolocator = Nominatim(user_agent="main.py")
+geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
 
 
 def read_file(file, year):
@@ -14,8 +14,9 @@ def read_file(file, year):
     that were shot at that location that year.
 
     Function example:
-    {'Riverdale Collegiate Institute, Toronto, Ontario, Canada': ['1-800-Missing'],
-    'Toronto, Ontario, Canada': ['1-800-Missing', '72 Hours: True Crime', '>Play',
+    {'Riverdale Collegiate Institute, Toronto, Ontario, Canada':
+    ['1-800-Missing'], 'Toronto, Ontario, Canada':
+    ['1-800-Missing', '72 Hours: True Crime', '>Play',
     "America's Next Top Model", ...
     """
     locations = {}
@@ -45,8 +46,8 @@ def location_of_input(latitude, longitude):
     This function returns the list of the words
     of the location entered by user.
 
-    >>> location_of_input('43.6502652', '-79.9036058')
-    ['199', ' Guelph Street', ' Delrex', ' Norval', ' Halton Hills', ' Halton Region', ' Golden Horseshoe', ' Ontario', ' L7G 4A9', ' Canada']
+    >>> location_of_input('43.6502652', '-79.9036058')[:2]
+    ['199', ' Guelph Street']
     """
     coord = latitude + ", " + longitude
     location = geolocator.reverse(coord, language='en')
@@ -86,7 +87,8 @@ def find_coordinates(locations, latitude, longitude):
                 counter += 1
                 try:
                     location = geolocator.geocode(i, timeout=3)
-                    new_locations[(location.latitude, location.longitude)] = locations[i]
+                    new_locations[(location.latitude, location.longitude)] \
+                        = locations[i]
                 except Exception:
                     continue
 
@@ -149,8 +151,8 @@ def result_dictionary(max_distances):
     in 'film' - the name of movie.
 
     >>> max_distances = {(32.7861789, -81.1237271): ['Anderson Cooper 360°']}
-    >>> result_dictionary(max_distances)
-    {'lat': [32.7861789], 'lon': [-81.1237271], 'film': ['Anderson Cooper 360°']}
+    >>> result_dictionary(max_distances)['lat']
+    [32.7861789]
 
     >>> max_distances = {(52.5170365, 13.3888599): ['Small World']}
     >>> result_dictionary(max_distances)
@@ -224,30 +226,27 @@ def web_map(result_dict, my_lat, my_lon):
     fg_1 = folium.FeatureGroup(name='Films on this year near your location')
 
     for lt, ln, fl in zip(lat, lon, film):
-        fg_1.add_child(folium.Marker(location=[lt, ln],
-                                   radius=10,
-                                   popup=fl))
-
+        fg_1.add_child(folium.Marker(location=[lt, ln], radius=10, popup=fl))
 
     lat_1 = []
     lon_1 = []
     geolocator = Nominatim(user_agent="main.py")
-    countries =['1 - United States of America', '2- China', '3 - Japan', '4 - United Kingdom',
-                '5 - India']
+    countries = ['1 - United States of America', '2- China', '3 - Japan',
+                 '4 - United Kingdom', '5 - India']
     for country in countries:
         location = geolocator.geocode(country.split("-")[1][1:])
         lat_1.append(location.latitude)
         lon_1.append(location.longitude)
 
-    fg_2 = folium.FeatureGroup(name="Top 5 leading film markets worldwide in 2018")
+    fg_2 = folium.FeatureGroup(name="Top 5 leading film markets worldwide "
+                                    "in 2018")
 
     for lt, ln, coun in zip(lat_1, lon_1, countries):
-        fg_2.add_child(folium.CircleMarker(location=[lt, ln],
-                                   radius=10,
-                                   popup=coun,
-                                   fill_color=color_creator(coun),
-                                   color='red',
-                                   fill_opacity=0.5))
+        fg_2.add_child(folium.CircleMarker(location=[lt, ln], radius=10,
+                                           popup=coun,
+                                           fill_color=color_creator(coun),
+                                           color='red',
+                                           fill_opacity=0.5))
 
     map.add_child(fg_1)
     map.add_child(fg_2)
@@ -265,13 +264,9 @@ if __name__ == '__main__':
     print("Please wait...")
     latitude = loc.split(",")[0]
     longitude = loc.split(",")[1]
-    locations = find_coordinates(read_file("locations.list", year), latitude, longitude)
+    locations = find_coordinates(read_file("locations.list", year), latitude,
+                                 longitude)
     max_distances = find_distance(locations, latitude, longitude)
     result_dict = result_dictionary(max_distances)
     web_map(result_dict, latitude, longitude)
     print("Finished. Please have look at the map movies_map.html")
-
-
-# перевірка на пеп 8
-# написати файл рід мі
-# розібратися з гітом і закинути туди
